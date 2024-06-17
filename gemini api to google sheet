@@ -1,0 +1,38 @@
+function googlesheetai() {
+
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  let activeCell = sheet.getActiveCell();
+  let activecellvalue = activeCell.getValue();
+
+
+  let userinput = "Write Google Sheet formula to "+activecellvalue+ " Do not add Backticks or extras just need formula ignore the & Sign";
+var data = {
+
+    "contents": [
+        {
+            "parts": [
+                {
+                    "text": userinput
+                }
+            ]
+        }
+    ]
+
+};
+var options = {
+  'method' : 'post',
+  'contentType': 'application/json',
+  'payload' : JSON.stringify(data)
+};
+var response = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', options);
+
+var data = JSON.parse(response.getContentText());
+
+    var resposetextofai = data.candidates[0].content.parts[0].text;
+
+    activeCell.setValue(resposetextofai)
+
+
+
+
+}
